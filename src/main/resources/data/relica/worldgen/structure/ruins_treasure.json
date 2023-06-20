@@ -4,9 +4,7 @@
   "size": 1,
   "max_distance_from_center": 80,
 
-  "biomes": [
-    "minecraft:plains"
-  ],
+  "biomes": "#relica:has_structure/ruins_treasure",
 
   "step": "underground_structures",
   "terrain_adaptation": "bury",

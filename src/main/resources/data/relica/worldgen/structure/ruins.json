@@ -4,9 +4,7 @@
   "size": 2,
   "max_distance_from_center": 80,
 
-  "biomes": [
-    "minecraft:plains"
-  ],
+  "biomes": "#relica:has_structure/ruins",
 
   "step": "surface_structures",
   "terrain_adaptation": "beard_thin",

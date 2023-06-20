@@ -6,16 +6,23 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:map",
           "functions": [
             {
               "function": "minecraft:exploration_map",
-              "destination": "relica:ruins_treasure",
               "decoration": "red_x",
-              "zoom": 1,
-              "skip_existing_chunks": false
+              "destination": "relica:ruins_treasure",
+              "skip_existing_chunks": false,
+              "zoom": 1
+            },
+            {
+              "function": "minecraft:set_name",
+              "name": {
+                "translate": "filled_map.buried_treasure"
+              }
             }
-          ]
+          ],
+          "name": "minecraft:map",
+          "weight": 1
         }
       ]
     },

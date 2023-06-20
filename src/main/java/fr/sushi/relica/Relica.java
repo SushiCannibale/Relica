@@ -1,10 +1,12 @@
 package fr.sushi.relica;
 
+import fr.sushi.relica.registry.ModItems;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.IModBusEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
 
 @Mod(Relica.MODID)
 public class Relica {
@@ -12,6 +14,7 @@ public class Relica {
 
     public Relica() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModItems.ITEMS.register(modEventBus);
         /*
 
           /data merge entity bbde30f4-58dc-466b-81ed-666b1eda57ac
