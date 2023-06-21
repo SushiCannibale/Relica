@@ -1,0 +1,61 @@
+{
+  "credit": "Made with Blockbench",
+
+  "parent": "minecraft:block/block",
+  "textures": {
+    "0": "relica:block/altar_base",
+    "1": "relica:block/altar_bottom",
+    "2": "relica:block/altar_front",
+    "3": "relica:block/altar_sides",
+    "4": "relica:block/altar_top",
+    "particle": "relica:block/altar_base"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 2, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+      "faces": {
+        "north": {"uv": [0, 14, 16, 16], "texture": "#0"},
+        "east": {"uv": [0, 6, 16, 8], "texture": "#0"},
+        "south": {"uv": [0, 6, 16, 8], "texture": "#0"},
+        "west": {"uv": [0, 6, 16, 8], "texture": "#0"},
+        "up": {"uv": [0, 0, 16, 16], "rotation": 180, "texture": "#0"},
+        "down": {"uv": [0, 16, 16, 0], "rotation": 180, "texture": "#1"}
+      }
+    },
+    {
+      "from": [0, 12, 1],
+      "to": [16, 16, 14],
+      "rotation": {"angle": -22.5, "axis": "x", "origin": [8, 14, 8]},
+      "faces": {
+        "north": {"uv": [0, 0, 16, 4], "texture": "#3"},
+        "east": {"uv": [0, 4, 13, 8], "texture": "#3"},
+        "south": {"uv": [0, 4, 16, 8], "texture": "#3"},
+        "west": {"uv": [0, 4, 13, 8], "texture": "#3"},
+        "up": {"uv": [0, 14, 16, 0], "texture": "#4"},
+        "down": {"uv": [0, 15, 16, 2], "texture": "#1"}
+      }
+    },
+    {
+      "from": [4, 2, 4],
+      "to": [12, 14, 12],
+      "rotation": {"angle": 0, "axis": "y", "origin": [8, 0, 8]},
+      "faces": {
+        "north": {"uv": [0, 0, 8, 12], "texture": "#2"},
+        "east": {"uv": [3, 16, 15, 8], "rotation": 90, "texture": "#3"},
+        "south": {"uv": [8, 4, 16, 16], "texture": "#2"},
+        "west": {"uv": [3, 16, 15, 8], "rotation": 90, "texture": "#3"},
+        "up": {"uv": [0, 0, 8, 8], "texture": "#missing"},
+        "down": {"uv": [0, 0, 8, 8], "texture": "#missing"}
+      }
+    }
+  ],
+  "display": {
+    "firstperson_righthand": {
+      "rotation": [ 0, 135, 0 ],
+      "translation": [ 0, 0, 0 ],
+      "scale": [ 0.4, 0.4, 0.4 ]
+    }
+  }
+}

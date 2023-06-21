@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "relica:block/altar",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "relica:block/altar"
+    },
+    "facing=south": {
+      "model": "relica:block/altar",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "relica:block/altar",
+      "y": 270
+    }
+  }
+}
