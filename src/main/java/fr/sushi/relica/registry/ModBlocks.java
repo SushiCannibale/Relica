@@ -14,15 +14,16 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 public class ModBlocks {
-
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Relica.MODID);
 
     public static final RegistryObject<AltarBlock> ALTAR = register("altar", () -> new AltarBlock(BlockBehaviour.Properties.of(Material.STONE)
-            .strength(2.5f)
+            .strength(5.0f)
             .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()
             .noOcclusion()));
 
     public static <T extends Block> RegistryObject<T> register(String name, Supplier<T> sup) {

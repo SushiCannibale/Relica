@@ -8,7 +8,7 @@
     "2": "relica:block/altar_front",
     "3": "relica:block/altar_sides",
     "4": "relica:block/altar_top",
-    "particle": "relica:block/altar_base"
+    "particle": "relica:block/altar_bottom"
   },
   "elements": [
     {

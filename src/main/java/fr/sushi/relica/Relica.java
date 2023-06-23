@@ -1,6 +1,9 @@
 package fr.sushi.relica;
 
+import fr.sushi.relica.event.ModEvents;
 import fr.sushi.relica.registry.ModBlocks;
+import fr.sushi.relica.registry.ModCreativeTabs;
+import fr.sushi.relica.registry.ModEntities;
 import fr.sushi.relica.registry.ModItems;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -13,7 +16,12 @@ public class Relica {
     public Relica() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModItems.ITEMS.register(modEventBus);
+        ModEntities.BLOCK_ENTITIES.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
+
+        modEventBus.register(ModCreativeTabs.class);
+        modEventBus.register(ModEvents.class);
+
         /*
 
           /data merge entity bbde30f4-58dc-466b-81ed-666b1eda57ac

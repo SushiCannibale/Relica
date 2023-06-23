@@ -1,3 +1,7 @@
 {
-  "filled_map.ruins_treasure": "Carte au Trésor des Ruines"
+  "block.relica.altar": "Autel",
+
+  "filled_map.ruins_treasure": "Carte au Trésor des Ruines",
+
+  "creativemodetab.relica_tab": "Relica"
 }

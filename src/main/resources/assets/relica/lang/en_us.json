@@ -1,4 +1,7 @@
 {
   "block.relica.altar": "Altar",
-  "filled_map.ruins_treasure": "Ruins Treasure Map"
+
+  "filled_map.ruins_treasure": "Ruins Treasure Map",
+
+  "creativemodetab.relica_tab": "Relica"
 }
