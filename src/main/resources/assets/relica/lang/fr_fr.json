@@ -1,7 +1,13 @@
 {
   "block.relica.altar": "Autel",
 
-  "filled_map.ruins_treasure": "Carte au Trésor des Ruines",
+  "item.relica.scroll": "Parchemin",
+  "item.relica.creative_scroll": "Parchemin des Dieux",
 
-  "creativemodetab.relica_tab": "Relica"
+  "filled_map.ruins_treasure": "Carte des Ruines",
+  "container.altar": "Autel",
+
+  "creativemodetab.relica_tab": "Relica",
+
+  "altar.fuel_level": "Fuel : "
 }

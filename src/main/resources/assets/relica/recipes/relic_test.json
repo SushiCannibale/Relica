@@ -1,0 +1,25 @@
+{
+  "type": "relica:infusion",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "relica:scroll"
+    },
+    "C": {
+      "tag": "minecraft:candle"
+    }
+  },
+
+  "pattern": [
+    "C#C",
+    "#S#",
+    "C#C"
+  ],
+  "result": {
+    "item": "relica:scroll"
+  },
+  "magic": 5,
+  "process_time": 10000
+}

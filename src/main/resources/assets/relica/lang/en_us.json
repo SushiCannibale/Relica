@@ -1,7 +1,14 @@
 {
   "block.relica.altar": "Altar",
 
+  "item.relica.scroll": "Scroll",
+  "item.relica.creative_scroll": "God Scroll",
+
   "filled_map.ruins_treasure": "Ruins Treasure Map",
 
-  "creativemodetab.relica_tab": "Relica"
+  "container.altar": "Altar",
+
+  "creativemodetab.relica_tab": "Relica",
+
+  "altar.fuel_level": "Fuel : "
 }
