@@ -3,21 +3,14 @@ package fr.sushi.relica.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import fr.sushi.relica.Relica;
-import fr.sushi.relica.client.menu.AltarMenu;
-import fr.sushi.relica.entity.tileentity.AltarBlockEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.AbstractWidget;
-import net.minecraft.client.gui.components.ImageWidget;
-import net.minecraft.client.gui.narration.NarrationElementOutput;
+import fr.sushi.relica.inventory.AltarMenu;
+import fr.sushi.relica.block.entity.AltarBlockEntity;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.awt.*;
 
 public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
     public static final ResourceLocation ALTAR_BG = new ResourceLocation(Relica.MODID, "textures/gui/container/altar.png");
@@ -62,7 +55,7 @@ public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
     }
 
     private void drawFuel(PoseStack pPoseStack) {
-        int fuelLevel = this.menu.getFuel();
+        int fuelLevel = this.menu.getData().get(0);
         int barHeight = Mth.clamp((52 * fuelLevel) / AltarBlockEntity.MAX_FUEL, 0, 52);
 
         if (barHeight > 0) {

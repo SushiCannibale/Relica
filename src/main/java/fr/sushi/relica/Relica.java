@@ -21,7 +21,7 @@ public class Relica {
 
         ModMenus.MENU_TYPES.register(modEventBus);
 
-        ModRecipes.RECIPE_TYPES.register(modEventBus);
+//        ModRecipes.RECIPE_TYPES.register(modEventBus);
         ModRecipes.RECIPE_SERIALIZERS.register(modEventBus);
 
         modEventBus.register(ModCreativeTabs.class);

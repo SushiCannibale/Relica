@@ -1,7 +1,7 @@
 package fr.sushi.relica.registry;
 
 import fr.sushi.relica.Relica;
-import fr.sushi.relica.entity.tileentity.AltarBlockEntity;
+import fr.sushi.relica.block.entity.AltarBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;

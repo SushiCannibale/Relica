@@ -6,18 +6,21 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import fr.sushi.relica.Relica;
+import fr.sushi.relica.block.entity.AltarBlockEntity;
 import fr.sushi.relica.registry.ModRecipes;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import org.checkerframework.framework.qual.Unused;
 
@@ -26,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class InfusionRecipe implements Recipe<RecipeWrapper> {
+public class InfusionRecipe implements Recipe<AltarBlockEntity> {
     private final ResourceLocation id;
     /* Ingredients list from JSON / network */
     private final NonNullList<Ingredient> ingredients;
@@ -42,26 +45,42 @@ public class InfusionRecipe implements Recipe<RecipeWrapper> {
         this.processTime = processTime;
     }
 
-    @Override
-    public boolean matches(RecipeWrapper pContainer, Level pLevel) {
-        return false;
+    public int getProcessTime() {
+        return this.processTime;
+    }
+
+    public int getMagicNeeded() {
+        return this.magic;
     }
 
     @Override
-    public ItemStack assemble(RecipeWrapper pContainer, RegistryAccess p_267165_) {
+    public boolean matches(AltarBlockEntity pBlockEntity, Level pLevel) {
+        for (int i = 0; i < this.ingredients.size(); i++) {
+            if (!this.ingredients.get(i).test(pBlockEntity.getItem(i)))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public ItemStack assemble(AltarBlockEntity pBlockEntity, RegistryAccess pRegistryAccess) {
+        ItemStackHandler container = pBlockEntity.getInventory();
+        for (int i = 0; i < container.getSlots(); i++) {
+            // TODO : shrink all the resources itemstacks
+        }
+
         return this.result.copy();
     }
 
     /* Not used */
     @Override
     public boolean canCraftInDimensions(int pWidth, int pHeight) {
-        return pWidth * pHeight >= this.ingredients.size();
+        return true;
     }
 
-    /* Display purpose */
+    /* Book display only */
     @Override
     public ItemStack getResultItem(RegistryAccess access) {
-
         return this.result;
     }
 
@@ -72,15 +91,20 @@ public class InfusionRecipe implements Recipe<RecipeWrapper> {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ModRecipes.INFUSION_RECIPE_SERIALIZER.get();
+        return InfusionRecipeSerializer.INSTANCE;
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ModRecipes.INFUSION_RECIPE_TYPE.get();
+        return InfusionRecipeType.INSTANCE;
+    }
+
+    public static class InfusionRecipeType implements RecipeType<InfusionRecipe> {
+        public static final InfusionRecipeType INSTANCE = new InfusionRecipeType();
     }
 
     public static class InfusionRecipeSerializer implements RecipeSerializer<InfusionRecipe> {
+        public static final InfusionRecipeSerializer INSTANCE = new InfusionRecipeSerializer();
 
         private static final ResourceLocation NAME = new ResourceLocation(Relica.MODID, "infusion");
         public static final int MAX_WIDTH = 3;
@@ -91,7 +115,7 @@ public class InfusionRecipe implements Recipe<RecipeWrapper> {
             Map<String, Ingredient> keys = keysFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "key"));
             String[] pattern = patternFromJson(GsonHelper.getAsJsonArray(pSerializedRecipe, "pattern"));
             NonNullList<Ingredient> inputs = dissolvePattern(pattern, keys, pattern[0].length(), pattern.length);
-            ItemStack result = itemStackFromJson(pSerializedRecipe);
+            ItemStack result = itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
             int magic = GsonHelper.getAsInt(pSerializedRecipe, "magic");
             int processTime = GsonHelper.getAsInt(pSerializedRecipe, "process_time");
             return new InfusionRecipe(pRecipeId, inputs, result, magic, processTime);
@@ -122,6 +146,7 @@ public class InfusionRecipe implements Recipe<RecipeWrapper> {
             pBuffer.writeVarInt(pRecipe.magic);
             pBuffer.writeVarInt(pRecipe.processTime);
         }
+
 
         /* -> #: minecraft:iron_ingot */
         private static Map<String, Ingredient> keysFromJson(JsonObject jsonArray) {

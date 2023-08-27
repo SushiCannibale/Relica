@@ -1,30 +1,20 @@
-package fr.sushi.relica.client.menu;
+package fr.sushi.relica.inventory;
 
-import fr.sushi.relica.entity.tileentity.AltarBlockEntity;
-import fr.sushi.relica.registry.ModBlocks;
+import fr.sushi.relica.block.entity.AltarBlockEntity;
 import fr.sushi.relica.registry.ModItems;
 import fr.sushi.relica.registry.ModMenus;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
-import net.minecraft.world.item.EnchantedBookItem;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
-
+/* TODO : ISSUE : When swapping items in candle slots, it removes the old itemstack */
 public class AltarMenu extends AbstractContainerMenu {
 
     private final class ScrollSlot extends Slot {
@@ -38,6 +28,14 @@ public class AltarMenu extends AbstractContainerMenu {
             // TODO : Add checks for a complete scroll
             return pStack.is(ModItems.SCROLL.get());
         }
+
+        @Override
+        public void onTake(Player pPlayer, ItemStack pStack) {
+            super.onTake(pPlayer, pStack);
+            /* TODO : Grants the player an advancement */
+        }
+
+
     }
     private final class CandleSlot extends Slot {
         public CandleSlot(Container pContainer, int pSlot, int pX, int pY) {
@@ -70,22 +68,26 @@ public class AltarMenu extends AbstractContainerMenu {
     private static final int START_INV_ID = AltarBlockEntity.INV_SIZE;
     private static final int END_HOTBAR_ID = START_INV_ID + 36;
     private final Container container;
-    private ContainerData data;
+    private final ContainerData data;
+
+
+
+    public int getFuel() {
+        return this.data.get(0);
+    }
 
     public AltarMenu(int pContainerId, Inventory pPlayerInventory) {
         this(ModMenus.ALTAR_MENU.get(), pContainerId, pPlayerInventory, new SimpleContainer(AltarBlockEntity.INV_SIZE), new SimpleContainerData(2));
     }
 
-    public int getFuel() {
-        return this.data.get(0);
+    public ContainerData getData() {
+        return this.data;
     }
 
     public AltarMenu(@Nullable MenuType<?> pMenuType, int pContainerId, Inventory pPlayerInventory, Container pContainer, ContainerData data) {
         super(pMenuType, pContainerId);
         this.container = pContainer;
         this.data = data;
-
-        ItemStack stack = this.container.getItem(0);
 
         this.addSlot(new CandleSlot(this.container, 0, 45, 18));
         this.addSlot(new Slot(this.container,1, 68, 14));
@@ -119,7 +121,7 @@ public class AltarMenu extends AbstractContainerMenu {
         Slot slot = this.slots.get(pIndex);
         if (slot.hasItem()) {
             ItemStack stack = slot.getItem();
-            preStack = preStack.copy();
+            preStack = stack.copy();
 
             /* From inventory to...  */
             if (pIndex > 9) {
@@ -156,16 +158,15 @@ public class AltarMenu extends AbstractContainerMenu {
 
             if (stack.isEmpty()) {
                 slot.m_269060_(ItemStack.EMPTY);
+            } else {
+                slot.setChanged();
             }
-            slot.setChanged();
 
             if (stack.getCount() == preStack.getCount()) {
                 return ItemStack.EMPTY;
             }
 
             slot.onTake(pPlayer, stack);
-            this.broadcastChanges();
-
         }
 
         return preStack;

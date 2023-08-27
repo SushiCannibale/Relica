@@ -8,7 +8,7 @@
       "item": "relica:scroll"
     },
     "C": {
-      "tag": "minecraft:candle"
+      "tag": "minecraft:candles"
     }
   },
 
@@ -21,5 +21,5 @@
     "item": "relica:scroll"
   },
   "magic": 5,
-  "process_time": 10000
+  "process_time": 1000
 }

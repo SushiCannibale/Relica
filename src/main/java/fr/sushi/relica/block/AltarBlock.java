@@ -1,7 +1,6 @@
 package fr.sushi.relica.block;
 
-import fr.sushi.relica.client.menu.AltarMenu;
-import fr.sushi.relica.entity.tileentity.AltarBlockEntity;
+import fr.sushi.relica.block.entity.AltarBlockEntity;
 import fr.sushi.relica.registry.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -9,7 +8,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -20,7 +18,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
@@ -129,6 +126,6 @@ public class AltarBlock extends BaseEntityBlock {
             i = altarBlockEntity.getFuel();
         }
 
-        return i;
+        return i * fortuneLevel;
     }
 }

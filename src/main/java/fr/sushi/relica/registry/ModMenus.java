@@ -1,10 +1,9 @@
 package fr.sushi.relica.registry;
 
 import fr.sushi.relica.Relica;
-import fr.sushi.relica.client.menu.AltarMenu;
+import fr.sushi.relica.inventory.AltarMenu;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.CartographyTableMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

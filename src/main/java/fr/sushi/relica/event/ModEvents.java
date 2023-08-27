@@ -6,10 +6,8 @@ import fr.sushi.relica.client.screen.AltarScreen;
 import fr.sushi.relica.registry.ModEntities;
 import fr.sushi.relica.registry.ModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraftforge.client.event.ContainerScreenEvent;
 import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.client.event.RenderArmEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -24,5 +22,9 @@ public class ModEvents {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> MenuScreens.register(ModMenus.ALTAR_MENU.get(), AltarScreen::new));
+    }
+
+    public static void onBlockEntityRender(ContainerScreenEvent.Render event) {
+//        event.
     }
 }
