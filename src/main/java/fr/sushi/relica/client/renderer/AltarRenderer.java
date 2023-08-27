@@ -9,10 +9,12 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
@@ -22,17 +24,14 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class AltarRenderer implements BlockEntityRenderer<AltarBlockEntity> {
+public class AltarRenderer extends AbstractMachineRenderer<AltarBlockEntity> {
     private final ItemRenderer itemRenderer;
     private final BlockRenderDispatcher blockRender;
 
     public AltarRenderer(BlockEntityRendererProvider.Context pContext) {
+        super(pContext);
         this.itemRenderer = pContext.getItemRenderer();
         this.blockRender = pContext.getBlockRenderDispatcher();
-    }
-
-    private void renderCandles(AltarBlockEntity pBlockEntity, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
-
     }
 
     public void render(AltarBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
@@ -104,5 +103,7 @@ public class AltarRenderer implements BlockEntityRenderer<AltarBlockEntity> {
 
             pPoseStack.popPose();
         }
+
+        this.renderProgress(pPoseStack, pBufferSource, pBlockEntity.getProcessTime(), pPackedLight);
     }
 }

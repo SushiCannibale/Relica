@@ -28,18 +28,5 @@ public class Relica {
 
         modEventBus.register(ModEvents.class);
         MinecraftForge.EVENT_BUS.register(ForgeEvents.class);
-
-        /*
-
-          /data merge entity bbde30f4-58dc-466b-81ed-666b1eda57ac
-          {Item:{
-            id:"minecraft:filled_map", Count:1b, tag:{
-                Decorations:
-                    [{x:1193.0d, z:-2375.0d, id:"+", type:26b, rot:180.0d}]
-                , map:1}
-            }
-          }
-
-         */
     }
 }

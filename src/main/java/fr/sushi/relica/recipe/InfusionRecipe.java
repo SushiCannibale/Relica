@@ -14,6 +14,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -25,6 +26,7 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 import org.checkerframework.framework.qual.Unused;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -64,10 +66,10 @@ public class InfusionRecipe implements Recipe<AltarBlockEntity> {
 
     @Override
     public ItemStack assemble(AltarBlockEntity pBlockEntity, RegistryAccess pRegistryAccess) {
-        ItemStackHandler container = pBlockEntity.getInventory();
-        for (int i = 0; i < container.getSlots(); i++) {
-            // TODO : shrink all the resources itemstacks
-        }
+//        ItemStackHandler container = pBlockEntity.getInventory();
+//        for (int i = 0; i < container.getSlots(); i++) {
+//            // TODO : shrink all the resources itemstacks
+//        }
 
         return this.result.copy();
     }
@@ -115,10 +117,14 @@ public class InfusionRecipe implements Recipe<AltarBlockEntity> {
             Map<String, Ingredient> keys = keysFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "key"));
             String[] pattern = patternFromJson(GsonHelper.getAsJsonArray(pSerializedRecipe, "pattern"));
             NonNullList<Ingredient> inputs = dissolvePattern(pattern, keys, pattern[0].length(), pattern.length);
-            ItemStack result = itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
+//            ItemStack result = itemStackFromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
+            Ingredient result = Ingredient.fromJson(GsonHelper.getAsJsonObject(pSerializedRecipe, "result"));
             int magic = GsonHelper.getAsInt(pSerializedRecipe, "magic");
             int processTime = GsonHelper.getAsInt(pSerializedRecipe, "process_time");
-            return new InfusionRecipe(pRecipeId, inputs, result, magic, processTime);
+
+            boolean flag = Arrays.stream(result.getItems()).anyMatch(s -> s.getItem() instanceof BlockItem);
+
+            return new InfusionRecipe(pRecipeId, inputs, result.getItems()[0], magic, processTime);
         }
 
         @Override

@@ -23,8 +23,4 @@ public class ModEvents {
     public static void clientSetup(FMLClientSetupEvent event) {
         event.enqueueWork(() -> MenuScreens.register(ModMenus.ALTAR_MENU.get(), AltarScreen::new));
     }
-
-    public static void onBlockEntityRender(ContainerScreenEvent.Render event) {
-//        event.
-    }
 }

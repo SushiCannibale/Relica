@@ -34,8 +34,6 @@ public class AltarMenu extends AbstractContainerMenu {
             super.onTake(pPlayer, pStack);
             /* TODO : Grants the player an advancement */
         }
-
-
     }
     private final class CandleSlot extends Slot {
         public CandleSlot(Container pContainer, int pSlot, int pX, int pY) {
@@ -69,8 +67,6 @@ public class AltarMenu extends AbstractContainerMenu {
     private static final int END_HOTBAR_ID = START_INV_ID + 36;
     private final Container container;
     private final ContainerData data;
-
-
 
     public int getFuel() {
         return this.data.get(0);
