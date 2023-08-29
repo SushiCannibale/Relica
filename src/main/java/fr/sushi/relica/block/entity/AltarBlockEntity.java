@@ -75,17 +75,18 @@ public class AltarBlockEntity extends MachineBlockEntity implements MenuProvider
     @Override
     void serverTick(Level pLevel, BlockPos pPos, BlockState pState) {
         ItemStack scroll = this.getItem(SCROLL_SLOT);
+        boolean needsUpdate = false;
 
         if (!scroll.isEmpty() && this.getFuel() > 0) {
             InfusionRecipe recipe = this.recipeChecker.getRecipeFor(this, pLevel).orElse(null);
             /* Container is matching the recipe */
             if (recipe != null) {
-                System.out.println(this.processTime);
                 int process = this.processTime;
                 int requiredMagic = recipe.getMagicNeeded();
 
                 /* Recipe is finished */
                 if (process == recipe.getProcessTime()) {
+                    needsUpdate = true;
                     ItemStack result = recipe.assemble(this, pLevel.m_9598_());
                     this.fuel -= requiredMagic;
                     this.processTime = 0;
@@ -94,19 +95,10 @@ public class AltarBlockEntity extends MachineBlockEntity implements MenuProvider
                     pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY() + 2D, pPos.getZ(), result));
 //                    pBlockEntity.inventory.insertItem(SCROLL_SLOT, result, false);
 
-                } else {
-                    if (this.fuel >= requiredMagic) {
-                        this.processTime++;
-                    }
+                } else if (this.fuel >= requiredMagic) {
+                    needsUpdate = true;
+                    this.processTime++;
                 }
-//                /* Recipe is about to start */
-//                } else if(process == 0 && pBlockEntity.fuel >= requiredMagic) {
-//
-//                /* Recipe must continue */
-//                } else {
-//                    pBlockEntity.processTime++;
-//                }
-
             }
         }
 
@@ -120,6 +112,7 @@ public class AltarBlockEntity extends MachineBlockEntity implements MenuProvider
             ItemStack consumed = tuple.getB();
 
             if (this.fuel + fuelGiven <= MAX_FUEL) {
+                needsUpdate = true;
                 this.fuel += fuelGiven;
                 // Not good :(
                 fuelStack.shrink(1);
@@ -127,6 +120,9 @@ public class AltarBlockEntity extends MachineBlockEntity implements MenuProvider
                 pLevel.playLocalSound(pPos, SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.BLOCKS, 1.0f, 1.0f, false);
             }
         }
+
+        if (needsUpdate)
+            this.setChanged();
     }
 
     public static Tuple<Integer, ItemStack> getFuelAmountAndResult(ItemStack pStack) {

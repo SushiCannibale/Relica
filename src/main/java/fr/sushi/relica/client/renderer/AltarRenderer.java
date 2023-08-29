@@ -28,10 +28,16 @@ public class AltarRenderer extends AbstractMachineRenderer<AltarBlockEntity> {
     private final ItemRenderer itemRenderer;
     private final BlockRenderDispatcher blockRender;
 
+    private float itemsBob;
+    private float itemsRot;
+
     public AltarRenderer(BlockEntityRendererProvider.Context pContext) {
         super(pContext);
         this.itemRenderer = pContext.getItemRenderer();
         this.blockRender = pContext.getBlockRenderDispatcher();
+
+        this.itemsBob = 0f;
+        this.itemsRot = 0f;
     }
 
     public void render(AltarBlockEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBufferSource, int pPackedLight, int pPackedOverlay) {
@@ -43,7 +49,6 @@ public class AltarRenderer extends AbstractMachineRenderer<AltarBlockEntity> {
 
             pPoseStack.pushPose();
             boolean isBlock;
-
 
             if (i == 4) {
                 // TODO Render Scroll on the altar
@@ -85,14 +90,19 @@ public class AltarRenderer extends AbstractMachineRenderer<AltarBlockEntity> {
                 }
 
                 float bob = Mth.sin(pPartialTick / 10f) * 0.1f;
-//                pPoseStack.translate(0.0D, bob, 0.0D);
-                pPoseStack.mulPose(Axis.YP.rotation(pPartialTick / 20f));
+                this.itemsRot += bob;
+                pPoseStack.mulPose(Axis.YP.rotation(this.itemsRot));
+
+//                pPoseStack.translate(0.0D, this.itemsRot, 0.0D);
+
+
                 pPoseStack.scale(0.45f, 0.45f, 0.45f);
             }
 
             BakedModel model;
 
             if (isBlock) {
+                // TODO : If recipe is ongoing, lighten the candles
                 model = this.blockRender.getBlockModel(Block.byItem(itemstack.getItem()).defaultBlockState());
                 this.blockRender.getModelRenderer().renderModel(pPoseStack.last(), pBufferSource.getBuffer(RenderType.solid()), null, model, 1.0f, 1.0f, 1.0f, pPackedLight, pPackedOverlay);
 
@@ -105,5 +115,6 @@ public class AltarRenderer extends AbstractMachineRenderer<AltarBlockEntity> {
         }
 
         this.renderProgress(pPoseStack, pBufferSource, pBlockEntity.getProcessTime(), pPackedLight);
+
     }
 }

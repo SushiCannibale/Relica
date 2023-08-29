@@ -10,6 +10,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -17,23 +18,42 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class MachineBlockEntity extends SynchedBlockEntity implements Container {
 
     protected final MachineInventory inventory;
-    protected final ContainerData data;
+    public final ContainerData data;
     protected int fuel;
     protected int processTime;
 
     public MachineBlockEntity(BlockEntityType<?> pType, BlockPos pPos, BlockState pBlockState, int containerSize) {
         super(pType, pPos, pBlockState);
-
         this.inventory = new MachineInventory(containerSize) {
             @Override
             public void updateInventory() {
                 MachineBlockEntity.this.setChanged();
             }
         };
+        this.data = new ContainerData() {
+            @Override
+            public int get(int pIndex) {
+                if (pIndex == 0)
+                    return MachineBlockEntity.this.fuel;
+                else if (pIndex == 1)
+                    return MachineBlockEntity.this.processTime;
+                else
+                    return -1;
+            }
 
-        this.data = new SimpleContainerData(2);
-        this.data.set(0, fuel);
-        this.data.set(1, this.processTime);
+            @Override
+            public void set(int pIndex, int pValue) {
+                if (pIndex == 0)
+                    MachineBlockEntity.this.fuel = pValue;
+                else if (pIndex == 1)
+                    MachineBlockEntity.this.processTime = pValue;
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
     }
 
     /* Data */
@@ -121,5 +141,12 @@ public abstract class MachineBlockEntity extends SynchedBlockEntity implements C
             - adding fuel
             - recipe
          */
+    }
+
+    @Override
+    public void setChanged() {
+        super.setChanged();
+        this.data.set(0, this.fuel);
+        this.data.set(1, this.processTime);
     }
 }

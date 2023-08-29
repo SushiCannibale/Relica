@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 public class AltarScreen extends AbstractContainerScreen<AltarMenu> {
     public static final ResourceLocation ALTAR_BG = new ResourceLocation(Relica.MODID, "textures/gui/container/altar.png");
     private Rect2i fuelBarArea;
+
     public AltarScreen(AltarMenu pMenu, Inventory pPlayerInventory, Component pTitle) {
         super(pMenu, pPlayerInventory, pTitle);
         this.imageWidth = 186;

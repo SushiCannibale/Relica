@@ -16,6 +16,20 @@ public abstract class SynchedBlockEntity extends BlockEntity {
         super(pType, pPos, pBlockState);
     }
 
+    /* Called when the client receive a chunk update */
+    @Override
+    public CompoundTag getUpdateTag() {
+        // Used to specify which data is not necessarily needed on the client
+        return this.saveWithFullMetadata();
+    }
+
+    @Override
+    public void handleUpdateTag(CompoundTag tag) {
+        // Used to specify which data is not necessarily needed on the client
+        super.handleUpdateTag(tag);
+    }
+
+    /* Called when the client receive a block update */
     @Nullable
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
@@ -23,12 +37,8 @@ public abstract class SynchedBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return this.saveWithFullMetadata();
-    }
-
-    @Override
     public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
+        // TODO : Check for differences in client datas and if necessary, make an update
         this.load(pkt.getTag());
     }
 
