@@ -19,10 +19,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.joml.Matrix4f;
-import org.joml.Quaterniond;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import org.joml.*;
+
+import java.util.Vector;
 
 public abstract class AbstractMachineRenderer<T extends MachineBlockEntity> implements BlockEntityRenderer<T> {
     protected final EntityRenderDispatcher entityRenderDispatcher;
@@ -42,45 +41,45 @@ public abstract class AbstractMachineRenderer<T extends MachineBlockEntity> impl
 
         Matrix4f matrix4f = pPoseStack.last().pose();
 
-        Quaternionf quat = this.entityRenderDispatcher.cameraOrientation();
-        float halfWidth = 0.75f;
+        TextureRect outlineRect = new TextureRect(
+                new Vector3f(0.5f, 2.5f, 0.5f),
+                new Vector3f(0.75f, 0f, 0f),
+                new Vector3f(2f, 2f, 2f),
+                new UvMap(64, 64,
+                            0, 0,
+                            0, 16,
+                            48, 16,
+                            48, 0));
 
-        pPoseStack.translate(0.5f, 1.5f, 0.5f);
-        pPoseStack.mulPose(quat);
+        outlineRect.center(pPoseStack);
+        pPoseStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 
+        outlineRect.draw(pBufferSource.getBuffer(this.renderType), matrix4f, pPackedLight);
+
+        TextureRect barRect = new TextureRect(
+                new Vector3f(0.5f, 2.5f, 0.5f),
+                new Vector3f(-6/64f, -6/64f, -0.01f),
+                new Vector3f(2f, 2f, 2f),
+                new UvMap(64, 64,
+                            0, 16,
+                            0, 20,
+                            36, 20,
+                            36, 16));
+
+        barRect.draw(pBufferSource.getBuffer(this.renderType), matrix4f, pPackedLight);
+    }
+
+    private void drawOutline(Matrix4f matrix4f, MultiBufferSource pBufferSource, int pPackedLight, Vector3f offset, Vector3f scale) {
         VertexConsumer consumer = pBufferSource.getBuffer(this.renderType);
-        consumer.vertex(matrix4f, 0f, 0f, 0f).color(255, 255, 255, 255).uv(0f, 0f).uv2(pPackedLight).endVertex();
-        consumer.vertex(matrix4f, 0f, -0.25f, 0f).color(255, 255, 255, 255).uv(0f, 0.25f).uv2(pPackedLight).endVertex();
-        consumer.vertex(matrix4f, -0.75f, -0.25f, 0f).color(255, 255, 255, 255).uv(0.75f, 0.25f).uv2(pPackedLight).endVertex();
-        consumer.vertex(matrix4f, -0.75f, 0f, 0f).color(255, 255, 255, 255).uv(0.75f, 0f).uv2(pPackedLight).endVertex();
+        /* topleft; botomleft; bottomleft; topright */
+        consumer.vertex(matrix4f, 0f * scale.x + offset.x, 0f * scale.y + offset.y, 0f * scale.z + offset.z).color(255, 255, 255, 255).uv(0f, 0f).uv2(pPackedLight).endVertex();
+        consumer.vertex(matrix4f, 0f * scale.x + offset.x, -0.25f * scale.y + offset.y, 0f * scale.z + offset.z).color(255, 255, 255, 255).uv(0f, 0.25f).uv2(pPackedLight).endVertex();
+        consumer.vertex(matrix4f, -0.75f * scale.x + offset.x, -0.25f * scale.y + offset.y, 0f * scale.z + offset.z).color(255, 255, 255, 255).uv(0.75f, 0.25f).uv2(pPackedLight).endVertex();
+        consumer.vertex(matrix4f, -0.75f * scale.x + offset.x, 0f * scale.y + offset.y, 0f * scale.z + offset.z).color(255, 255, 255, 255).uv(0.75f, 0f).uv2(pPackedLight).endVertex();
+    }
 
-//        consumer.vertex(matrix4f, halfWidth, 1f - 0.5f, 0.0F).color(255, 255, 255, 255).uv(0f, 0.25f).uv2(pPackedLight).endVertex();
-//        consumer.vertex(matrix4f, halfWidth - 2f, 1f - 0.5f, 0.0F).color(255, 255, 255, 255).uv(0.75f, 0.25f).uv2(pPackedLight).endVertex();
-//        consumer.vertex(matrix4f, halfWidth - 2f, 1f, 0.0F).color(255, 255, 255, 255).uv(0.75f, 0f).uv2(pPackedLight).endVertex();
-//        consumer.vertex(matrix4f, halfWidth, 1f, 0.0F).color(255, 255, 255, 255).uv(0f, 0f).uv2(pPackedLight).endVertex();
+    private void drawBar() {
 
-//        VertexConsumer consumer1 = pBufferSource.getBuffer(this.renderType);
-//        consumer1.vertex(matrix4f, halfWidth + 6/64f, 1f - 0.5f + 6/64f, -0.01F).color(255, 255, 255, 255).uv(6/64f, 0.25f - 6/64f).uv2(pPackedLight).endVertex();
-//        consumer1.vertex(matrix4f, halfWidth - 2f + 6/64f, 1f - 0.5f + 6/64f, -0.01F).color(255, 255, 255, 255).uv(0.75f - 6/64f, 0.25f - 6/64f).uv2(pPackedLight).endVertex();
-//        consumer1.vertex(matrix4f, halfWidth - 2f + 6/64f, 1f - 6/64f, -0.01F).color(255, 255, 255, 255).uv(1f - 6/64f, 6/64f).uv2(pPackedLight).endVertex();
-//        consumer1.vertex(matrix4f, halfWidth + 6/64f, 1f - 6/64f, -0.01F).color(255, 255, 255, 255).uv(6/64f, 6/64f).uv2(pPackedLight).endVertex();
-
-//        pPoseStack.pushPose();
-//
-//        pPoseStack.mulPose(Axis.YP.rotationDegrees(90f));
-//
-//        pPoseStack.popPose();
-
-//        Tesselator tes = Tesselator.getInstance();
-//        BufferBuilder builder = tes.getBuilder();
-//
-//        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-//        builder.vertex(matrix4f, 0f, 1f, -0.01f).uv(0f, 1f).endVertex();
-//        builder.vertex(matrix4f, 64f, 64f, -0.01f).uv(1f, 1f).endVertex();
-//        builder.vertex(matrix4f, 64f, 0f, -0.01f).uv(1f, 0f).endVertex();
-//        builder.vertex(matrix4f, 0f, 0f, -0.01f).uv(0f, 0f).endVertex();
-//
-//        tes.end();
     }
 
     /* From github.ToroHealth */
